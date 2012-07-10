@@ -15,6 +15,27 @@ module Sprockets
         load "tasks/assets.rake"
       end
 
+      config.before_initialize do |app|
+        assets = ActiveSupport::OrderedOptions.new
+        assets.enabled                  = true
+        assets.paths                    = []
+        assets.precompile               = [ Proc.new{ |path| !File.extname(path).in?(['.js', '.css']) },
+                                             /(?:\/|\\|\A)application\.(css|js)$/ ]
+        assets.prefix                   = "/assets"
+        assets.version                  = ''
+        assets.debug                    = false
+        assets.compile                  = true
+        assets.digest                   = false
+        assets.manifest                 = nil
+        assets.cache_store              = [ :file_store, "#{::Rails.root}/tmp/cache/assets/" ]
+        assets.js_compressor            = nil
+        assets.css_compressor           = nil
+        assets.initialize_on_precompile = true
+        assets.logger                   = nil
+
+        app.config.assets = assets
+      end
+
       initializer "sprockets.environment", :group => :all do |app|
         config = app.config
         next unless config.assets.enabled
@@ -57,7 +78,7 @@ module Sprockets
       # are compiled, and so that other Railties have an opportunity to
       # register compressors.
       config.after_initialize do |app|
-        Sprockets::Rails::Bootstrap.new(app).run
+        #Sprockets::Rails::Bootstrap.new(app).run
       end
     end
   end

@@ -1,4 +1,5 @@
 require "action_view"
+require 'sprockets/rails/asset_paths'
 
 module Sprockets
   module Rails
@@ -59,10 +60,10 @@ module Sprockets
         end
         alias_method :path_to_asset, :asset_path # aliased to avoid conflicts with an asset_path named route
 
-        def image_path(source)
-          path_to_asset(source)
-        end
-        alias_method :path_to_image, :image_path # aliased to avoid conflicts with an image_path named route
+        #def image_path(source)
+        #  path_to_asset(source)
+        #end
+        #alias_method :path_to_image, :image_path # aliased to avoid conflicts with an image_path named route
 
         def font_path(source)
           path_to_asset(source)
